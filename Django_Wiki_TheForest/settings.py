@@ -50,6 +50,11 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
+AUTHENTICATION_BACKENDS = [
+    'app.authentication.EmailAuthBackend',
+    'django.contrib.auth.backends.ModelBackend',
+]
+
 ROOT_URLCONF = 'Django_Wiki_TheForest.urls'
 
 TEMPLATES = [
@@ -70,6 +75,7 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'Django_Wiki_TheForest.wsgi.application'
 
+AUTH_USER_MODEL = 'app.Usuario'
 
 # Database
 # https://docs.djangoproject.com/en/5.0/ref/settings/#databases

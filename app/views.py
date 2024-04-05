@@ -1,5 +1,30 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
+from django.contrib.auth.decorators import login_required
+from django.contrib.auth import authenticate, login
+from .forms import RegistroUsuarioForm
+from .forms import EditarUsuarioForm
 
+@login_required
+def miCuenta(request):
+    usuario = request.user
+    if request.method == 'POST':
+        form = EditarUsuarioForm(request.POST, instance=usuario)
+        if form.is_valid():
+            form.save()
+            return redirect('menuPrincipal')
+    else:
+        form = EditarUsuarioForm(instance=usuario)
+    return render(request, 'app/micuentatf.html', {'form': form})
+
+def registro(request):
+    if request.method == 'POST':
+        form = RegistroUsuarioForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('inicioSesion')
+    else:
+        form = RegistroUsuarioForm()
+    return render(request, 'app/registrase_wiki.html', {'form': form})
 
 def animales(request):
     return render(request, 'app/Animales.html')
@@ -26,7 +51,18 @@ def historia(request):
     return render(request, 'app/historia.html')
 
 def inicioSesion(request):
-    return render(request, 'app/inicio_sesion_wiki.html')
+    if request.method == 'POST':
+        email = request.POST.get('email')
+        password = request.POST.get('password')
+        user = authenticate(request, username=email, password=password)
+        print(user)
+        if user is not None:
+            login(request, user)
+            return redirect('cuenta')
+        else:
+            return render(request, 'app/inicio_sesion_wiki.html', {'error': 'Email o contraseña incorrectos'})
+    else:
+        return render(request, 'app/inicio_sesion_wiki.html')
 
 def logros(request):
     return render(request, 'app/logros.html')
@@ -42,6 +78,3 @@ def miCuenta(request):
 
 def recuperarContraseña(request):
     return render(request, 'app/recuperarcontra.html')
-
-def registro(request):
-    return render(request, 'app/registrase_wiki.html')

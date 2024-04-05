@@ -13,7 +13,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Open+Sans:wght@400;600&display=swap"
     rel="stylesheet">
     <script src="https://kit.fontawesome.com/ffec4ec2ed.js" crossorigin="anonymous"></script>
-    <link rel="stylesheet" href="csslogin/login.css" />
+    <link rel="stylesheet" href="{% static 'css/login.css' %}" />
 
     <title>Iniciar sesion-The forest Wiki</title>
   </head>
@@ -83,22 +83,18 @@
                 </div>
                 <div class="align-self-center w-100 px-lg-5 py-lg-4 p-4">
                 <h1 class="font-weight-bold mb-4" id="subir">Bienvenido Ingresa tu Usuario</h1>
-                <form class="mb-5">
-                    <div class="mb-4">
-                      <label for="exampleInputEmail1" class="form-label font-weight-bold">Email</label>
-                      <input type="email" class="form-control bg-dark-x border-0" id="exampleInputEmail1" placeholder="I" aria-describedby="emailHelp" style="background-color: #ffffff;">
-                    </div>
-                    <div class="mb-4">
-                      <label for="exampleInputPassword1" class="form-label font-weight-bold">Contraseña</label>
-                      <input type="password" value="FakePSW" id="myInput" class="form-control bg-dark-x border-0 mb-2" placeholder="Ingresa tu contraseña" id="exampleInputPassword1" 
-                      pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}" title="Must contain at least one number and one uppercase and lowercase letter, and at least 8 or more characters" required style="background-color: #ffffff;">
-                      <input type="checkbox" onclick="myFunction()"> Mostrar Contraseña
-                      <a href="recuperarcontra.html" id="emailHelp" class="form-text text-muted text-decoration-none">  ¿Has olvidado tu contraseña?</a>                     
-                    </div>
-                    <a href="menuprincipal_wiki.html" class="button">Iniciar sesion</a>
-
-                  </form>
-
+                <form method="post" action="{% url 'inicioSesion' %}">
+                  {% csrf_token %}
+                  <div class="mb-3">
+                      <label for="email" class="form-label">Email</label>
+                      <input type="email" name="email" class="form-control" id="email" required>
+                  </div>
+                  <div class="mb-3">
+                      <label for="password" class="form-label">Contraseña</label>
+                      <input type="password" name="password" class="form-control" id="password" required>
+                  </div>
+                  <button type="submit" class="btn btn-primary">Iniciar Sesión</button>
+              </form>
 
                 </div>
                 <div class="text-center px-lg-5 pt-lg-3 pb-lg-4 p-4 mt-auto w-100">
