@@ -7,12 +7,8 @@ from django.http import HttpRequest
 
 @login_required
 def miCuenta(request: HttpRequest):
-    print('entramos al metodo')
-    print(request.method)
     if request.method == 'POST':
         form = EditarUsuarioForm(request.POST, instance=request.user)
-        print(form.is_valid())  # Para verificar si el formulario es válido
-        print(form.errors)      # Para imprimir los errores de validación, si los hay
         if form.is_valid():
             form.save()
             return redirect('cuenta')
