@@ -3,20 +3,24 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth import authenticate, login
 from .forms import RegistroUsuarioForm
 from .forms import EditarUsuarioForm
+from django.http import HttpRequest
 
 @login_required
-def miCuenta(request):
-    usuario = request.user
+def miCuenta(request: HttpRequest):
+    print('entramos al metodo')
+    print(request.method)
     if request.method == 'POST':
-        form = EditarUsuarioForm(request.POST, instance=usuario)
+        form = EditarUsuarioForm(request.POST, instance=request.user)
+        print(form.is_valid())  # Para verificar si el formulario es válido
+        print(form.errors)      # Para imprimir los errores de validación, si los hay
         if form.is_valid():
             form.save()
-            return redirect('menuPrincipal')
+            return redirect('cuenta')
     else:
-        form = EditarUsuarioForm(instance=usuario)
+        form = EditarUsuarioForm(instance=request.user)
     return render(request, 'app/micuentatf.html', {'form': form})
 
-def registro(request):
+def registro(request: HttpRequest):
     if request.method == 'POST':
         form = RegistroUsuarioForm(request.POST)
         if form.is_valid():
@@ -72,9 +76,6 @@ def lugares(request):
 
 def menuPrincipal(request):
     return render(request, 'app/menuprincipal_wiki.html')
-
-def miCuenta(request):
-    return render(request, 'app/micuentatf.html')
 
 def recuperarContraseña(request):
     return render(request, 'app/recuperarcontra.html')

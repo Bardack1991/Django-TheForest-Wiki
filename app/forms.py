@@ -1,5 +1,8 @@
 from django import forms
 from .models import Usuario
+from django.contrib.auth import get_user_model
+
+User = get_user_model()
 
 class RegistroUsuarioForm(forms.ModelForm):
     password = forms.CharField(label='Contraseña', widget=forms.PasswordInput)
@@ -25,4 +28,4 @@ class RegistroUsuarioForm(forms.ModelForm):
 class EditarUsuarioForm(forms.ModelForm):
     class Meta:
         model = Usuario
-        fields = ('nombre', 'email')
+        fields = ('nombre', 'email', 'password')
